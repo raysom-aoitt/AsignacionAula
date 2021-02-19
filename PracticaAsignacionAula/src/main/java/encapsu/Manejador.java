@@ -11,21 +11,17 @@ public class Manejador {
 		super();
 	}
 	public void rutas(Javalin app, Usuario e){
-		Map<String, String> info = new HashMap<String, String>() ;
 		app.get("/", ctx -> ctx.redirect("/Inicio.html"));
 			app.config.accessManager((handler, ctx, permittedRoles) -> {
 				Usuario exa = new Usuario();
 				app.post("/loggear", ctx -> {
-					info.put(ctx.formParam("username"), ctx.formParam("password"));
+					exa.setUser(ctx.formParam("username", ctx.formParam("password")));
+					if(comparar(e, exa)) {
+						ctx.redirect("/fin.html");
+					}else {
+						ctx.redirect("/AccesoDenegao.html");
+					}
 				});
-				app.get("/fin", ctx ->{
-					
-				});
-				if(comparar(e, exa)) {
-					ctx.redirect("/AccesoDenegao.html");
-				}else {
-					ctx.redirect("/AccesoDenegao.html");
-				}
 			});
 		
 	}
